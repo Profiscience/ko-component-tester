@@ -1,0 +1,21 @@
+{
+  "name": "ko-component-tester",
+  "version": "1.0.0",
+  "description": "automated testing for KnockoutJS components",
+  "repository": "barsh/ko-component-tester",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Barshinger",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "chai-jquery": "^2.0.0",
+    "jquery": "^2.2.2",
+    "jsdom": "^8.2.0",
+    "knockout": "^3.4.0"
+  },
+  "devDependencies": {
+  }
+}
