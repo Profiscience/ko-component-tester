@@ -5,7 +5,8 @@
   "repository": "barsh/ko-component-tester",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel-core/register --recursive ./test",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Michael Barshinger",
   "license": "ISC",
@@ -17,5 +18,7 @@
     "knockout": "^3.4.0"
   },
   "devDependencies": {
+    "babel-core": "^6.7.4",
+    "mocha": "^2.4.5"
   }
 }

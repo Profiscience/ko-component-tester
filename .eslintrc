@@ -17,7 +17,6 @@
     "prefer-arrow-callback": 2,
     "prefer-const": 2,
     "semi": [2, "never"],
-    "space-before-function-paren": [2, "never"],
-    "strict": [2, "global"]
+    "space-before-function-paren": [2, "never"]
   }
 }
