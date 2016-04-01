@@ -3,19 +3,22 @@
   "version": "1.0.0",
   "description": "automated testing for KnockoutJS components",
   "repository": "barsh/ko-component-tester",
-  "main": "index.js",
+  "main": "ko-component-tester.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register --recursive ./test",
+    "test1": "mocha --compilers js:babel-core/register --recursive ./test",
+    "test": "mocha --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
   "author": "Michael Barshinger",
   "license": "ISC",
   "dependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "chai-jquery": "^2.0.0",
     "jquery": "^2.2.2",
     "jsdom": "^8.2.0",
-    "knockout": "^3.4.0"
+    "knockout": "^3.4.0",
+    "knockout-punches": "^0.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",
