@@ -4,22 +4,24 @@ const jsdom = require('jsdom')
 const jquery = require('jquery')
 const chai = require('chai')
 const expect = chai.expect
-//const chaiAsPromised = require('chai-as-promised')
-//chai.use(chaiAsPromised)
-//const chaiJquery = require('chai-jquery')
+const chaiAsPromised = require('chai-as-promised')
+chai.should()
+chai.use(chaiAsPromised)
 
 // setup fake dom for jquery
 global.document = jsdom.jsdom(`<html><head></head><body></body></html>`)
 global.window = global.document.defaultView
+global.location = global.window.location
+
 // add knockout to fake dom
 const ko = global.window.ko = require('knockout')
 require('knockout-punches')
 
 // add jquery to fake dom
-const $ = jquery(global.window)
+const $ = global.$ = jquery(global.window)
 // enable chai expressions
-//chaiJquery(chai, chai.util, $)
-
+const chaiJquery = require('chai-jquery')
+chaiJquery(chai, chai.util, $)
 
 // extend jquery so events can be simulated
 $.fn.simulate = function(eventName, value) {
@@ -56,29 +58,31 @@ function renderHtml(opts) {
   return $el
 }
 
-function waitFor(condition, timeout) {
-  function promise(resolve) {
-    let resolved = false
-    const interval = setInterval(() => {
-        const result = (typeof condition === 'function')
-          ? ko.unwrap(condition())
-          : ko.unwrap(condition)
-        if (result) {
-          clearInterval(interval)
-          ko.tasks.runEarly()
-          resolved = true
-          resolve()
-        return
-        }
-    })
-    setTimeout(() => {
-      if (resolved) return
-      clearInterval(interval)
-      ko.tasks.runEarly()
-      //console.log('waitfor timed out')
-      resolve()
-    }, timeout || 2000)
+function waitFor(func, timeout) {
+  if (typeof func !== 'function') throw new Error('first param of waitFor must be a function')
 
+  function promise(resolve, reject) {
+    let timeoutId = null, intervalId = null, resolved = false
+
+    function onTimeout() {
+      clearInterval(intervalId)
+      if (resolved) return
+      reject(new Error('waitFor timed out'))
+    }
+
+    function onInterval() {
+      const result = ko.unwrap(func())
+      if (result === true || result.length > 0) {
+        resolved = true
+        clearInterval(intervalId)
+        clearTimeout(timeoutId)
+        ko.tasks.runEarly()
+        resolve(result)
+      }
+    }
+
+    timeoutId = setTimeout(onTimeout, timeout || 2000)
+    intervalId = setInterval(onInterval)
   }
   return new Promise(promise)
 }
