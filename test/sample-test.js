@@ -1,6 +1,6 @@
 'use strict'
 
-const tester = require('./ko-component-tester')
+const tester = require('../ko-component-tester.js')
 const expect = tester.expect
 const ko = require('knockout')
 
