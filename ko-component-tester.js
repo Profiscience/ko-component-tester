@@ -1,24 +1,14 @@
 'use strict'
 
-const jsdom = require('jsdom')
-const jquery = require('jquery')
+const $ = require('jquery')
 const chai = require('chai')
 const expect = chai.expect
 const chaiAsPromised = require('chai-as-promised')
 chai.should()
 chai.use(chaiAsPromised)
 
-// setup fake dom for jquery
-global.document = jsdom.jsdom(`<html><head></head><body></body></html>`)
-global.window = global.document.defaultView
-global.location = global.window.location
+const ko = require('knockout')
 
-// add knockout to fake dom
-const ko = global.window.ko = require('knockout')
-require('knockout-punches')
-
-// add jquery to fake dom
-const $ = global.$ = jquery(global.window)
 // enable chai expressions
 const chaiJquery = require('chai-jquery')
 chaiJquery(chai, chai.util, $)
@@ -72,7 +62,8 @@ function waitFor(func, timeout) {
 
     function onInterval() {
       const result = ko.unwrap(func())
-      if (result === true || result.length > 0) {
+      if (typeof result !== 'undefined' && (!result.length || result.length > 0))
+      {
         resolved = true
         clearInterval(intervalId)
         clearTimeout(timeoutId)

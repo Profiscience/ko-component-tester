@@ -2,8 +2,9 @@
 
 const tester = require('../ko-component-tester.js')
 const expect = tester.expect
-
-tester.ko.punches.enableAll()
+const ko = require('knockout')
+require('knockout-punches')
+ko.punches.enableAll()
 
 describe('knockout punches' , () => {
   describe('html' , () => {

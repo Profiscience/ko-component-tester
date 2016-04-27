@@ -2,7 +2,7 @@
 
 const tester = require('../ko-component-tester.js')
 const expect = tester.expect
-const $ = tester.$
+const $ = require('jquery')
 
 describe('ko-component-tests', () => {
   describe('should', () => {
@@ -40,7 +40,7 @@ describe('ko-component-tests', () => {
   })
   describe('chai-jquery', () => {
     it('is enabled', () => {
-      $('<input checked />').should.be.checked.should.exist
+      $('<input type="checkbox" checked />').should.be.checked.should.exist
     })
     it('handles should.have.class', () => {
       const $el = $('<div class="foo"></div>')
