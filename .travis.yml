@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - stable
+
+addons:
+  firefox: "latest"
+
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+after_script:
+  - codeclimate-test-reporter < coverage/lcov.txt

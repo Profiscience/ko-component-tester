@@ -1,37 +1,24 @@
 'use strict'
 
-const tester = require('../ko-component-tester.js')
-const expect = tester.expect
 const ko = require('knockout')
+const { expect } = require('chai')
+const sinon = require('sinon')
+const { renderComponent } = require('../src')
 
 class LoginComponent {
-  constructor(params) {
-    params = params || {}
+  constructor() {
     this.username = ko.observable()
     this.password = ko.observable()
-    this.onSubmit = params.onSubmit || function() {}
   }
-  submit() {
-    this.onSubmit({
-        username: this.username(),
-        password: this.password()
-    })
-  }
+  submit() {}
 }
-let credentials
-const params = {
-  onSubmit : (creds) => {
-    credentials = creds
-  }
-}
-const viewModel = new LoginComponent(params)
 
 describe('sample login component' , () => {
   let $el
 
   before(() => {
-    $el = tester.renderComponent({
-      viewModel: { instance: viewModel },
+    $el = renderComponent({
+      viewModel: LoginComponent,
       template: `
         <form data-bind="submit: submit">
           <input name="user" type="text" data-bind="value: username">
@@ -41,42 +28,25 @@ describe('sample login component' , () => {
     })
   })
 
-  it('renders', () => {
+  it('renders correctly', () => {
     expect($el).to.exist
-  })
-  it('has a form', () => {
-    expect($el.find('form')).to.exist
-  })
-  it('has a username field', () => {
-    expect($el.find('input[name="user"]')).to.exist
-  })
-  it('has a password field', () => {
-    expect($el.find('input[name="pass"]')).to.exist
-  })
-  it('has a submit button', () => {
-    expect($el.find('input[type="submit"]')).to.exist
+    expect($el.find('form'), 'contains a form').to.exist
+    expect($el.find('input[name="user"]', 'contains a username field')).to.exist
+    expect($el.find('input[name="pass"]', 'contains a password field')).to.exist
+    expect($el.find('input[type="submit"]', 'contains a submit button')).to.exist
   })
 
-  describe('entering a username', () => {
-    before(() => {
-      $el.find('input[name=user]').simulate('change', 'john')
-    })
-    it('updates viewModel', () => {
-      expect(viewModel.username()).equals('john')
-    })
+  it('updates the viewmodel when a value is changed', () => {
+    $el.find('input[name=user]').simulate('change', 'john')
+    expect($el.$data.username()).equals('john')
   })
 
-  describe('submitting form', () => {
-    before( () => {
-      $el.find('input[name=user]').simulate('change', 'john')
-      $el.find('input[name=pass]').simulate('change', 'p455w0rd')
-      $el.find('input[type="submit"]').simulate('click')
-    })
-    it('calls params.onSubmit() with credentials', () => {
-      expect(credentials).to.eql({
-          username: 'john',
-          password: 'p455w0rd'
-      })
-    })
+  it('can submit the form', () => {
+    const submitSpy = sinon.spy($el.$data.submit)
+    $el.find('input[name=user]').simulate('change', 'john')
+    $el.find('input[name=pass]').simulate('change', 'p455w0rd')
+    $el.find('input[type="submit"]').simulate('click')
+
+    expect(submitSpy).to.be.called
   })
 })

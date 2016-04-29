@@ -1,19 +1,41 @@
+'use strict'
+
 module.exports = {
-  entry: "./ko-component-tester.js",
+  entry: './src/index.js',
+
   output: {
-      path: __dirname + '/dist',
-      filename: "ko-component-tester.js"
+    path: 'dist',
+    filename: 'ko-component-tester.js',
+    library:  'ko-component-tester',
+    libraryTarget: 'umd'
   },
+
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel', // 'babel-loader' is also a legal name to reference
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        loader: 'babel',
         query: {
+          cacheDirectory: true,
           presets: ['es2015']
         }
       }
     ]
+  },
+
+  externals: {
+    'jquery': {
+      root: 'jQuery',
+      commonjs: 'jquery',
+      commonjs2: 'jquery',
+      amd: 'jquery'
+    },
+    'knockout': {
+      root: 'ko',
+      commonjs: 'knockout',
+      commonjs2: 'knockout',
+      amd: 'knockout'
+    }
   }
 }
