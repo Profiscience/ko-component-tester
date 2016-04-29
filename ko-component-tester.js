@@ -10,6 +10,7 @@ $.fn.simulate = function(eventName, value) {
   const event = global.document.createEvent('UIEvents')
   event.initEvent(eventName, true, true)
   this.get(0).dispatchEvent(event)
+  ko.tasks.runEarly()
 }
 
 $.fn.waitForBindings = function(timeout = 2000) {
@@ -31,6 +32,30 @@ $.fn.waitForBindings = function(timeout = 2000) {
         resolve($el)
       }
     }
+  })
+}
+
+$.fn.waitForProperty = function(prop, val, timeout = 2000) {
+  return new Promise((resolve, reject) => {
+    if (typeof val !== 'undefined' && this.$data[prop]() === val) {
+      resolve(val)
+    }
+
+    const timeoutId = setTimeout(() => {
+      killMe.dispose()
+      reject(`Timed out waiting for property ${prop}`)
+    }, timeout)
+
+    const killMe = this.$data[prop].subscribe((v) => {
+      if ((val && v !== val) || typeof v === 'undefined') {
+        return
+      }
+
+      clearTimeout(timeoutId)
+      killMe.dispose()
+      ko.tasks.runEarly()
+      resolve(v)
+    })
   })
 }
 
