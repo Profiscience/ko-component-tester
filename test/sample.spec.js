@@ -3,7 +3,7 @@
 const ko = require('knockout')
 const { expect } = require('chai')
 const sinon = require('sinon')
-const { renderComponent } = require('../ko-component-tester.js')
+const { renderComponent } = require('../src')
 
 class LoginComponent {
   constructor() {
