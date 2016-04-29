@@ -1,21 +1,20 @@
 'use strict'
 
-const tester = require('../ko-component-tester.js')
-const expect = tester.expect
+const { renderComponent } = require('../ko-component-tester.js')
+const { expect } = require('chai')
 
-describe('component binding' , () => {
+describe('component' , () => {
   let $el
-  beforeEach(() => {
-    $el = tester.renderComponent({
+
+  before(() => {
+    $el = renderComponent({
       template: `<span data-bind="text: greeting"></span>`,
       viewModel: function() { this.greeting = 'Hello Component' }
-      //viewModel: class vm { constructor() { this.greeting = 'Hello World' } }
     })
   })
-  it('renders', () => {
+
+  it('renders correctly', () => {
     expect($el).to.exist
-  })
-  it('renders content', () => {
     expect($el.html()).contains('Hello Component')
   })
 })

@@ -1,8 +1,8 @@
 module.exports = {
-  entry: "./ko-component-tester.js",
+  entry: './ko-component-tester.js',
   output: {
-      path: __dirname + '/dist',
-      filename: "ko-component-tester.js"
+    path: __dirname + '/dist',
+    filename: 'ko-component-tester.js'
   },
   module: {
     loaders: [

@@ -1,25 +1,20 @@
 'use strict'
 
-const tester = require('../ko-component-tester.js')
-const expect = tester.expect
+const { renderHtml } = require('../ko-component-tester.js')
+const { expect } = require('chai')
 
-describe('text-binding' , () => {
+describe('binding' , () => {
   let $el
 
-  beforeEach(() => {
-    $el = tester.renderHtml({
+  before(() => {
+    $el = renderHtml({
       template: `<div data-bind="text: greeting"></div>`,
       viewModel: { greeting: 'Hello Text Binding'}
-      //viewModel: function() { this.greeting = 'hello world' }
-      //viewModel: class vm { constructor() { this.greeting = 'Hello World' } }
     })
   })
 
-  it('renders', () => {
+  it('renders correctly', () => {
     expect($el).to.exist
-  })
-
-  it('renders text', () => {
     expect($el.html()).equals('Hello Text Binding')
   })
 })

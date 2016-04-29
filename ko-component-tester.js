@@ -1,36 +1,57 @@
 'use strict'
 
-const $ = require('jquery')
-const chai = require('chai')
-const expect = chai.expect
-const chaiAsPromised = require('chai-as-promised')
-chai.should()
-chai.use(chaiAsPromised)
-
 const ko = require('knockout')
+const $ = require('jquery')
 
-// enable chai expressions
-const chaiJquery = require('chai-jquery')
-chaiJquery(chai, chai.util, $)
-
-// extend jquery so events can be simulated
 $.fn.simulate = function(eventName, value) {
-  if (value) this.val(value)
+  if (value) {
+    this.val(value)
+  }
   const event = global.document.createEvent('UIEvents')
   event.initEvent(eventName, true, true)
-  this[0].dispatchEvent(event)
+  this.get(0).dispatchEvent(event)
 }
 
-function renderComponent(component, params) {
-  params = params || {}
+$.fn.waitForBindings = function(timeout = 2000) {
+  return new Promise((resolve, reject) => {
+    const $el = this
+    const intervalId = setInterval(checkForBindings)
+    const timeoutId = setTimeout(abort, timeout)
+
+    function abort() {
+      clearInterval(intervalId)
+      reject('Timed out waiting for bindings')
+    }
+
+    function checkForBindings() {
+      ko.tasks.runEarly()
+      if (ko.contextFor($el.get(0))) {
+        clearTimeout(timeoutId)
+        clearInterval(intervalId)
+        resolve($el)
+      }
+    }
+  })
+}
+
+$.fn.getComponentParams = function() {
+  return ko.contextFor(ko.virtualElements.firstChild(this.get(0))).$component.params
+}
+
+function renderComponent(component, params = {}) {
+  const $el = $(`<div data-bind="component: { name: 'SUT', params: params }"></div>`)
   component.synchronous = true
-  if (ko.components.isRegistered('component'))
-    ko.components.unregister('component')
-  ko.components.register('component', component)
-  const $el = $(`<div data-bind="component: { name: 'component', params: params }"></div>`)
+
+  if (ko.components.isRegistered('SUT')) { ko.components.unregister('SUT') }
+  ko.components.register('SUT', component)
+
   $('body').html($el)
-  ko.applyBindings({ params }, $el[0])
-  ko.components.unregister('component')
+  ko.applyBindings({ params }, $el.get(0))
+  ko.tasks.runEarly()
+
+  ko.components.unregister('SUT')
+
+  $el.$data = ko.dataFor(ko.virtualElements.firstChild($el.get(0)))
   return $el
 }
 
@@ -41,41 +62,16 @@ function renderHtml(opts) {
   try { $el = $(opts.template) }
   catch (e) { $el = $(`<span>${opts.template}</span>`) }
   $('body').html($el)
-  if (typeof opts.viewModel === 'function')
-     ko.applyBindings(new opts.viewModel(), $el[0])
-  else
-     ko.applyBindings(opts.viewModel, $el[0])
+
+  if (typeof opts.viewModel === 'function') {
+     ko.applyBindings(new opts.viewModel(), $el.get(0))
+  } else {
+     ko.applyBindings(opts.viewModel, $el.get(0))
+  }
+
+  ko.tasks.runEarly()
+  $el.$data = ko.dataFor($el.get(0))
   return $el
 }
 
-function waitFor(func, timeout) {
-  if (typeof func !== 'function') throw new Error('first param of waitFor must be a function')
-
-  function promise(resolve, reject) {
-    let timeoutId = null, intervalId = null, resolved = false
-
-    function onTimeout() {
-      clearInterval(intervalId)
-      if (resolved) return
-      reject(new Error('waitFor timed out'))
-    }
-
-    function onInterval() {
-      const result = ko.unwrap(func())
-      if (typeof result !== 'undefined' && (!result.length || result.length > 0))
-      {
-        resolved = true
-        clearInterval(intervalId)
-        clearTimeout(timeoutId)
-        ko.tasks.runEarly()
-        resolve(result)
-      }
-    }
-
-    timeoutId = setTimeout(onTimeout, timeout || 2000)
-    intervalId = setInterval(onInterval)
-  }
-  return new Promise(promise)
-}
-
-module.exports = { expect, $, ko, renderComponent, renderHtml, waitFor }
+module.exports = { renderComponent, renderHtml }
