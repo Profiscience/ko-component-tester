@@ -156,7 +156,7 @@ const options = {
 }
 const $el = renderHtml(options)
 ```
-[See spec for more examples of renderHtml().)](test/renderHtml.spec.js)
+[See spec for more examples of renderHtml().](test/renderHtml.spec.js)
 
 
 #### renderComponent(component, params)
@@ -210,9 +210,9 @@ const $el = renderComponent(component)
 ```
 [See spec for more examples of renderComponent().](test/renderComponent.spec.js)
 
-#### getComponentParams()
+#### $el.getComponentParams()
 
-[see spec for examples](test/sample.spec.js)
+[see spec for examples](test/getComponentParams.spec.js)
 
 #### $el.waitForBinding()
 
