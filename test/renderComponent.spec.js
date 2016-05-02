@@ -39,8 +39,13 @@ describe('renderComponent' , () => {
   })
 
   it('should be able to supply the parent bindingContext', () => {
+    ko.bindingHandlers.checkContext = {
+      init(el, valueAccessor, allBindings, viewModel, bindingContext) {
+        expect(bindingContext.$parentContext.greeting()).to.equal('Hello Component')
+      }
+    }
     const $el = renderComponent({
-      template: `<span data-bind="text: $parent.greeting"></span>`
+      template: `<span data-bind="text: $parent.greeting, checkContext"></span>`
     },
     {},
     {

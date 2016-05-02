@@ -2,6 +2,7 @@
 
 const ko = require('knockout')
 const $ = require('jquery')
+const _ = require('lodash')
 
 $.fn.simulate = function(eventName, value) {
   if (value) {
@@ -96,25 +97,30 @@ $.fn.getComponentParams = function() {
 }
 
 function renderComponent(component, params = {}, parentCtx = {}) {
-  const $el = $(`<div data-bind="component: { name: 'SUT', params: params }"></div>`)
+  const $el = $(`<div data-bind="_setContext: _parentCtx, component: { name: '_SUT', params: _params }"></div>`)
   component.synchronous = true
 
-  ko.components.register('SUT', component)
+  ko.components.register('_SUT', component)
+  ko.bindingHandlers._setContext = {
+    init(el, valueAccessor, allBindings, viewModel, bindingContext) {
+      _.merge(bindingContext, parentCtx)
+    }
+  }
 
   $('body').html($el)
-  parentCtx.params = params
-  ko.applyBindings(parentCtx, $el.get(0))
+  ko.applyBindings(_.merge({ _params: params }, parentCtx), $el.get(0))
   ko.tasks.runEarly()
 
-  ko.components.unregister('SUT')
+  ko.components.unregister('_SUT')
+  ko.bindingHandlers._setContext = (void 0)
 
   $el.$data = $el.children().length > 0
     ? ko.dataFor($el.children().get(0))
     : ko.dataFor(ko.virtualElements.firstChild($el.get(0)))
 
-  $el.$context = $el.children().length > 0
+  $el.$context = ($el.children().length > 0
     ? ko.contextFor($el.children().get(0))
-    : ko.contextFor(ko.virtualElements.firstChild($el.get(0)))
+    : ko.contextFor(ko.virtualElements.firstChild($el.get(0)))) || {}
 
   return $el
 }
