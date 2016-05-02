@@ -98,7 +98,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var timeout = arguments.length <= 2 || arguments[2] === undefined ? 2000 : arguments[2];
 
 	  return new Promise(function (resolve, reject) {
-	    if (typeof _this.$data[prop]() !== 'undefined' && (typeof val === 'undefined' || _this.$data[prop]() === val)) {
+	    if (matches(_this.$data[prop]())) {
 	      return resolve(_this.$data[prop]());
 	    }
 
@@ -108,7 +108,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, timeout);
 
 	    var killMe = _this.$data[prop].subscribe(function (v) {
-	      if (val && v !== val || typeof v === 'undefined') {
+	      if (!matches(v)) {
 	        return;
 	      }
 
@@ -118,6 +118,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	      resolve(v);
 	    });
 	  });
+
+	  function matches(v) {
+	    return typeof v !== 'undefined' && (typeof val === 'undefined' || (val instanceof RegExp ? val.test(v) : v === val));
+	  }
 	};
 
 	ko.components.loaders.unshift({

@@ -36,7 +36,7 @@ $.fn.waitForBinding = function(bindingName) {
 
 $.fn.waitForProperty = function(prop, val, timeout = 2000) {
   return new Promise((resolve, reject) => {
-    if ((typeof this.$data[prop]() !== 'undefined') && (typeof val === 'undefined' || this.$data[prop]() === val)) {
+    if (matches(this.$data[prop]())) {
       return resolve(this.$data[prop]())
     }
 
@@ -46,7 +46,7 @@ $.fn.waitForProperty = function(prop, val, timeout = 2000) {
     }, timeout)
 
     const killMe = this.$data[prop].subscribe((v) => {
-      if ((val && v !== val) || typeof v === 'undefined') {
+      if (!matches(v)) {
         return
       }
 
@@ -56,6 +56,12 @@ $.fn.waitForProperty = function(prop, val, timeout = 2000) {
       resolve(v)
     })
   })
+
+  function matches(v) {
+    return typeof v !== 'undefined' && (typeof val === 'undefined' || (val instanceof RegExp
+      ? val.test(v)
+      : v === val))
+  }
 }
 
 ko.components.loaders.unshift({

@@ -41,6 +41,24 @@ describe('waitForProperty' , function() { // eslint-disable-line
     })
   })
 
+  it('waits for property to match regex specified', (done) => {
+    const $el = renderComponent({
+      template: `<span data-bind="text: greeting"></span>`,
+      viewModel: function() {
+        this.greeting = ko.observable('Hello, World"')
+        setTimeout(() => this.greeting('Good afternoon, World!'), 100)
+        setTimeout(() => this.greeting('Goodbye, World!'), 200)
+      }
+    })
+
+    $el.waitForProperty('greeting', /bye/i).then((v) => {
+      expect(v).to.equal('Goodbye, World!')
+      expect($el.$data.greeting()).to.equal('Goodbye, World!')
+      expect($el.html()).contains('Goodbye, World!')
+      done()
+    })
+  })
+
   it('resolves immediately if not undefined and no value specified', (done) => {
     const $el = renderComponent({
       template: `<span data-bind="text: greeting"></span>`,
@@ -58,6 +76,22 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('resolves immediately if already equal to value specified', (done) => {
+    const $el = renderComponent({
+      template: `<span data-bind="text: greeting"></span>`,
+      viewModel: function() {
+        this.greeting = ko.observable('Hello, World!')
+      }
+    })
+
+    $el.waitForProperty('greeting', 'Hello, World!').then((v) => {
+      expect(v).to.equal('Hello, World!')
+      expect($el.$data.greeting()).to.equal('Hello, World!')
+      expect($el.html()).contains('Hello, World!')
+      done()
+    })
+  })
+
+  it('resolves immediately if already matches regex specified', (done) => {
     const $el = renderComponent({
       template: `<span data-bind="text: greeting"></span>`,
       viewModel: function() {
