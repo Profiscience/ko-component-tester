@@ -162,6 +162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function renderComponent(component) {
 	  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	  var parentCtx = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
 	  var $el = $('<div data-bind="component: { name: \'SUT\', params: params }"></div>');
 	  component.synchronous = true;
@@ -169,12 +170,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ko.components.register('SUT', component);
 
 	  $('body').html($el);
-	  ko.applyBindings({ params: params }, $el.get(0));
+	  parentCtx.params = params;
+	  ko.applyBindings(parentCtx, $el.get(0));
 	  ko.tasks.runEarly();
 
 	  ko.components.unregister('SUT');
 
 	  $el.$data = $el.children().length > 0 ? ko.dataFor($el.children().get(0)) : ko.dataFor(ko.virtualElements.firstChild($el.get(0)));
+
+	  $el.$context = $el.children().length > 0 ? ko.contextFor($el.children().get(0)) : ko.contextFor(ko.virtualElements.firstChild($el.get(0)));
 
 	  return $el;
 	}

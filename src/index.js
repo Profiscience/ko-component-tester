@@ -95,14 +95,15 @@ $.fn.getComponentParams = function() {
   return ko.contextFor(ko.virtualElements.firstChild(this.get(0))).$component._calledWith
 }
 
-function renderComponent(component, params = {}) {
+function renderComponent(component, params = {}, parentCtx = {}) {
   const $el = $(`<div data-bind="component: { name: 'SUT', params: params }"></div>`)
   component.synchronous = true
 
   ko.components.register('SUT', component)
 
   $('body').html($el)
-  ko.applyBindings({ params }, $el.get(0))
+  parentCtx.params = params
+  ko.applyBindings(parentCtx, $el.get(0))
   ko.tasks.runEarly()
 
   ko.components.unregister('SUT')
@@ -110,6 +111,10 @@ function renderComponent(component, params = {}) {
   $el.$data = $el.children().length > 0
     ? ko.dataFor($el.children().get(0))
     : ko.dataFor(ko.virtualElements.firstChild($el.get(0)))
+
+  $el.$context = $el.children().length > 0
+    ? ko.contextFor($el.children().get(0))
+    : ko.contextFor(ko.virtualElements.firstChild($el.get(0)))
 
   return $el
 }

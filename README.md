@@ -159,7 +159,7 @@ const $el = renderHtml(options)
 [See spec for more examples of renderHtml().](test/renderHtml.spec.js)
 
 
-#### renderComponent(component, params)
+#### renderComponent(component, params, parentBindingContext)
 
 returns a jQuery element containing the rendered html output
 
@@ -208,6 +208,7 @@ const component = {
 }
 const $el = renderComponent(component)
 ```
+
 [See spec for more examples of renderComponent().](test/renderComponent.spec.js)
 
 #### $el.getComponentParams()

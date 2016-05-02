@@ -37,4 +37,17 @@ describe('renderComponent' , () => {
     $el.$data.greeting('Goodbye Component')
     expect($el.$data.greeting()).equals('Goodbye Component')
   })
+
+  it('should be able to supply the parent bindingContext', () => {
+    const $el = renderComponent({
+      template: `<span data-bind="text: $parent.greeting"></span>`
+    },
+    {},
+    {
+      greeting: ko.observable('Hello Component')
+    })
+
+    expect($el.html()).contains('Hello Component')
+    expect($el.$context.$parent.greeting()).to.equal('Hello Component')
+  })
 })
