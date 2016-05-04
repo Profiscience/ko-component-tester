@@ -73,12 +73,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	$.fn.waitForBinding = function (bindingName) {
-	  var _arguments = arguments;
+	  var _this = this,
+	      _arguments = arguments;
 
-	  var $el = this;
+	  if (!ko.bindingHandlers[bindingName]) throw new Error('binding does not exist: ' + bindingName);
+
 	  var binding = ko.bindingHandlers[bindingName].init ? ko.bindingHandlers[bindingName].init.bind(ko.bindingHandlers[bindingName].init) : function () {};
 
 	  return new Promise(function (resolve) {
+	    var $el = _this;
 	    ko.bindingHandlers[bindingName].init = function (el) {
 	      if ($el.get(0) === el) {
 	        binding.apply(undefined, _arguments);
@@ -94,13 +97,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	$.fn.waitForProperty = function (prop, val) {
-	  var _this = this;
+	  var _this2 = this;
 
 	  var timeout = arguments.length <= 2 || arguments[2] === undefined ? 2000 : arguments[2];
 
 	  return new Promise(function (resolve, reject) {
-	    if (matches(_this.$data[prop]())) {
-	      return resolve(_this.$data[prop]());
+	    if (matches(_this2.$data()[prop]())) {
+	      return resolve(_this2.$data()[prop]());
 	    }
 
 	    var timeoutId = setTimeout(function () {
@@ -108,7 +111,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      reject('Timed out waiting for property ' + prop);
 	    }, timeout);
 
-	    var killMe = _this.$data[prop].subscribe(function (v) {
+	    var killMe = _this2.$data()[prop].subscribe(function (v) {
 	      if (!matches(v)) {
 	        return;
 	      }
@@ -123,6 +126,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  function matches(v) {
 	    return typeof v !== 'undefined' && (typeof val === 'undefined' || (val instanceof RegExp ? val.test(v) : v === val));
 	  }
+	};
+
+	$.fn.$data = function () {
+	  return this.children().length > 0 ? ko.dataFor(this.children().get(0)) : ko.dataFor(ko.virtualElements.firstChild(this.get(0)));
+	};
+
+	$.fn.$context = function () {
+	  return this.children().length > 0 ? ko.contextFor(this.children().get(0)) : ko.contextFor(ko.virtualElements.firstChild(this.get(0)));
 	};
 
 	ko.components.loaders.unshift({
@@ -182,10 +193,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ko.components.unregister('_SUT');
 	  ko.bindingHandlers._setContext = void 0;
 
-	  $el.$data = $el.children().length > 0 ? ko.dataFor($el.children().get(0)) : ko.dataFor(ko.virtualElements.firstChild($el.get(0)));
-
-	  $el.$context = ($el.children().length > 0 ? ko.contextFor($el.children().get(0)) : ko.contextFor(ko.virtualElements.firstChild($el.get(0)))) || {};
-
 	  return $el;
 	}
 
@@ -210,8 +217,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  ko.tasks.runEarly();
-
-	  $el.$data = ko.dataFor(ko.virtualElements.firstChild($el.get(0)));
 
 	  return $el;
 	}

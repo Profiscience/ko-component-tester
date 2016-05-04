@@ -8,7 +8,7 @@ const { expect } = require('chai')
 describe('waitForProperty' , function() { // eslint-disable-line
   it('waits for property to be defined when no value specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable()
         setTimeout(() => this.greeting('Hello, World!'), 200)
@@ -17,15 +17,14 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting').then((v) => {
       expect(v).to.equal('Hello, World!')
-      expect($el.$data.greeting()).to.equal('Hello, World!')
-      expect($el.html()).contains('Hello, World!')
+      expect($el.$data().greeting()).to.equal('Hello, World!')
       done()
     })
   })
 
   it('waits for property to be equal value specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable('Hello, World"')
         setTimeout(() => this.greeting('Good afternoon, World!'), 100)
@@ -35,15 +34,14 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting', 'Goodbye, World!').then((v) => {
       expect(v).to.equal('Goodbye, World!')
-      expect($el.$data.greeting()).to.equal('Goodbye, World!')
-      expect($el.html()).contains('Goodbye, World!')
+      expect($el.$data().greeting()).to.equal('Goodbye, World!')
       done()
     })
   })
 
   it('waits for property to match regex specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable('Hello, World"')
         setTimeout(() => this.greeting('Good afternoon, World!'), 100)
@@ -53,15 +51,14 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting', /bye/i).then((v) => {
       expect(v).to.equal('Goodbye, World!')
-      expect($el.$data.greeting()).to.equal('Goodbye, World!')
-      expect($el.html()).contains('Goodbye, World!')
+      expect($el.$data().greeting()).to.equal('Goodbye, World!')
       done()
     })
   })
 
   it('resolves immediately if not undefined and no value specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable('Hello, World!')
       }
@@ -69,15 +66,14 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting').then((v) => {
       expect(v).to.equal('Hello, World!')
-      expect($el.$data.greeting()).to.equal('Hello, World!')
-      expect($el.html()).contains('Hello, World!')
+      expect($el.$data().greeting()).to.equal('Hello, World!')
       done()
     })
   })
 
   it('resolves immediately if already equal to value specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable('Hello, World!')
       }
@@ -85,15 +81,14 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting', 'Hello, World!').then((v) => {
       expect(v).to.equal('Hello, World!')
-      expect($el.$data.greeting()).to.equal('Hello, World!')
-      expect($el.html()).contains('Hello, World!')
+      expect($el.$data().greeting()).to.equal('Hello, World!')
       done()
     })
   })
 
   it('resolves immediately if already matches regex specified', (done) => {
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable('Hello, World!')
       }
@@ -101,8 +96,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
 
     $el.waitForProperty('greeting', 'Hello, World!').then((v) => {
       expect(v).to.equal('Hello, World!')
-      expect($el.$data.greeting()).to.equal('Hello, World!')
-      expect($el.html()).contains('Hello, World!')
+      expect($el.$data().greeting()).to.equal('Hello, World!')
       done()
     })
   })
@@ -111,7 +105,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
     const clock = sinon.useFakeTimers()
 
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable()
       }
@@ -130,7 +124,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
     const clock = sinon.useFakeTimers()
 
     const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
+      template: `<span></span>`,
       viewModel: function() {
         this.greeting = ko.observable()
       }

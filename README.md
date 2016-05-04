@@ -101,11 +101,11 @@ describe('sample login component' , () => {
 
   it('updates the viewmodel when a value is changed', () => {
     $el.find('input[name=user]').simulate('change', 'john')
-    expect($el.$data.username()).equals('john')
+    expect($el.$data().username()).equals('john')
   })
 
   it('can submit the form', () => {
-    const submitSpy = sinon.spy($el.$data.submit)
+    const submitSpy = sinon.spy($el.$data().submit)
     $el.find('input[name=user]').simulate('change', 'john')
     $el.find('input[name=pass]').simulate('change', 'p455w0rd')
     $el.find('input[type="submit"]').simulate('click')
