@@ -26,33 +26,4 @@ describe('renderComponent' , () => {
     expect($el.html()).contains('Hello Component')
   })
 
-  it('should be able to access/update viewmodel via $data', () => {
-    const $el = renderComponent({
-      template: `<span data-bind="text: greeting"></span>`,
-      viewModel: function() { this.greeting = ko.observable('Hello Component') }
-    })
-
-    expect($el.html()).contains('Hello Component')
-    expect($el.$data.greeting()).equals('Hello Component')
-    $el.$data.greeting('Goodbye Component')
-    expect($el.$data.greeting()).equals('Goodbye Component')
-  })
-
-  it('should be able to supply the parent bindingContext', () => {
-    ko.bindingHandlers.checkContext = {
-      init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-        expect(bindingContext.$parentContext.greeting()).to.equal('Hello Component')
-      }
-    }
-    const $el = renderComponent({
-      template: `<span data-bind="text: $parent.greeting, checkContext"></span>`
-    },
-    {},
-    {
-      greeting: ko.observable('Hello Component')
-    })
-
-    expect($el.html()).contains('Hello Component')
-    expect($el.$context.$parent.greeting()).to.equal('Hello Component')
-  })
 })

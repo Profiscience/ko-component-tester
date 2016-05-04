@@ -34,6 +34,22 @@ describe('waitForBinding' , () => {
     ko.bindingHandlers.asyncText = (void 0)
   })
 
+  it('should throw error if binding is not defined', (done) => {
+    const $el = renderComponent({
+      template: `<span class="test-me" data-bind="notdefined: ''"></span>`,
+      viewModel: function() { }
+    })
+
+    const $$el = $el.find('.test-me')
+    try {
+      $$el.waitForBinding('notdefined')
+    }
+    catch (e) {
+      expect(e.message).to.contain('binding does not exist')
+    }
+    done()
+  })
+
   it('works with bindings that have init funcs', (done) => {
     const $el = renderComponent({
       template: `

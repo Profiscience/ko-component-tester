@@ -15,12 +15,15 @@ $.fn.simulate = function(eventName, value) {
 }
 
 $.fn.waitForBinding = function(bindingName) {
-  const $el = this
+  if (!ko.bindingHandlers[bindingName])
+    throw new Error(`binding does not exist: ${bindingName}`)
+
   const binding = ko.bindingHandlers[bindingName].init
     ? ko.bindingHandlers[bindingName].init.bind(ko.bindingHandlers[bindingName].init)
     : function() {}
 
   return new Promise((resolve) => {
+    const $el = this
     ko.bindingHandlers[bindingName].init = (el) => {
       if ($el.get(0) === el) {
         binding(...arguments)
@@ -37,8 +40,8 @@ $.fn.waitForBinding = function(bindingName) {
 
 $.fn.waitForProperty = function(prop, val, timeout = 2000) {
   return new Promise((resolve, reject) => {
-    if (matches(this.$data[prop]())) {
-      return resolve(this.$data[prop]())
+    if (matches(this.$data()[prop]())) {
+      return resolve(this.$data()[prop]())
     }
 
     const timeoutId = setTimeout(() => {
@@ -46,7 +49,7 @@ $.fn.waitForProperty = function(prop, val, timeout = 2000) {
       reject(`Timed out waiting for property ${prop}`)
     }, timeout)
 
-    const killMe = this.$data[prop].subscribe((v) => {
+    const killMe = this.$data()[prop].subscribe((v) => {
       if (!matches(v)) {
         return
       }
@@ -63,6 +66,18 @@ $.fn.waitForProperty = function(prop, val, timeout = 2000) {
       ? val.test(v)
       : v === val))
   }
+}
+
+$.fn.$data = function() {
+  return this.children().length > 0
+    ? ko.dataFor(this.children().get(0))
+    : ko.dataFor(ko.virtualElements.firstChild(this.get(0)))
+}
+
+$.fn.$context = function() {
+  return this.children().length > 0
+    ? ko.contextFor(this.children().get(0))
+    : ko.contextFor(ko.virtualElements.firstChild(this.get(0)))
 }
 
 ko.components.loaders.unshift({
@@ -114,14 +129,6 @@ function renderComponent(component, params = {}, parentCtx = {}) {
   ko.components.unregister('_SUT')
   ko.bindingHandlers._setContext = (void 0)
 
-  $el.$data = $el.children().length > 0
-    ? ko.dataFor($el.children().get(0))
-    : ko.dataFor(ko.virtualElements.firstChild($el.get(0)))
-
-  $el.$context = ($el.children().length > 0
-    ? ko.contextFor($el.children().get(0))
-    : ko.contextFor(ko.virtualElements.firstChild($el.get(0)))) || {}
-
   return $el
 }
 
@@ -139,8 +146,6 @@ function renderHtml({ template, viewModel = {} }) {
   }
 
   ko.tasks.runEarly()
-
-  $el.$data = ko.dataFor(ko.virtualElements.firstChild($el.get(0)))
 
   return $el
 }
