@@ -1,6 +1,5 @@
 'use strict'
 
-const ko = require('knockout')
 const { renderComponent } = require('../src')
 const { expect } = require('chai')
 
