@@ -2,7 +2,9 @@
   "name": "ko-component-tester",
   "version": "3.0.0",
   "description": "automated testing for KnockoutJS components",
-  "repository": "barsh/ko-component-tester",
+  "repository": "profiscience/ko-component-tester",
+  "homepage": "https://github.com/Profiscience/ko-component-tester",
+  "bugs": "https://github.com/Profiscience/ko-component-tester/issues",
   "main": "dist/ko-component-tester.js",
   "scripts": {
     "build": "webpack && uglifyjs dist/ko-component-tester.js -o dist/ko-component-tester.min.js",
@@ -16,8 +18,12 @@
     "build",
     "stage-dist"
   ],
-  "author": "Michael Barshinger",
-  "license": "ISC",
+  "author": "Michael Barshinger <michael.barshinger@profiscience.com>",
+  "contributors": [
+    "Casey Webb <notcaseywebb@gmail.com>",
+    "Michael Barshinger <michael.barshinger@profiscience.com>"
+  ],
+  "license": "WTFPL",
   "devDependencies": {
     "babel-core": "^6.7.6",
     "babel-loader": "^6.2.4",
