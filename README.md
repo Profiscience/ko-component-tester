@@ -1,13 +1,13 @@
 # ko-component-tester
 
 ![NPM](https://img.shields.io/npm/v/ko-component-tester.svg)
+[![NPM Downloads](https://img.shields.io/npm/dt/ko-component-tester.svg?maxAge=2592000)]()  
 ![WTFPL](https://img.shields.io/npm/l/ko-component-tester.svg)
 [![Travis](https://img.shields.io/travis/Profiscience/ko-component-tester.svg)](https://travis-ci.org/Profiscience/ko-component-tester)
 [![Code Climate](https://codeclimate.com/repos/5722f79905ce330069002b3d/badges/b563b20b9953f6cddedc/gpa.svg)](https://codeclimate.com/repos/5722f79905ce330069002b3d/feed)
 [![Test Coverage](https://codeclimate.com/repos/5722f79905ce330069002b3d/badges/b563b20b9953f6cddedc/coverage.svg)](https://codeclimate.com/repos/5722f79905ce330069002b3d/coverage)
 [![Dependency Status](https://img.shields.io/david/Profiscience/ko-component-tester.svg)](https://david-dm.org/Profiscience/ko-component-tester)
 [![Peer Dependency Status](https://img.shields.io/david/peer/Profiscience/ko-component-tester.svg?maxAge=2592000)]()
-[![NPM Downloads](https://img.shields.io/npm/dt/ko-component-tester.svg?maxAge=2592000)]()  
 
 _TDD Helpers for Knockout components and bindings_
 
