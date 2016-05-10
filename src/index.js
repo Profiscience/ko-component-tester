@@ -115,6 +115,10 @@ function renderComponent(component, params = {}, parentCtx = {}) {
   const $el = $(`<div data-bind="_setContext: _parentCtx, component: { name: '_SUT', params: _params }"></div>`)
   component.synchronous = true
 
+  if (ko.components.isRegistered('_SUT')) {
+    ko.components.unregister('_SUT')
+  }
+
   ko.components.register('_SUT', component)
   ko.bindingHandlers._setContext = {
     init(el, valueAccessor, allBindings, viewModel, bindingContext) {
