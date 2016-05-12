@@ -5,10 +5,11 @@ const { renderHtml } = require('../src')
 const { expect } = require('chai')
 
 describe('getComponentParams' , () => {
-  it('can access/update component params with a function viewModel', () => {
-    if (ko.components.isRegistered('foo'))
+  afterEach(() => {
      ko.components.unregister('foo')
+  })
 
+  it('can access/update component params with a function viewModel', () => {
     ko.components.register('foo', {
       template: '<div data-bind="text: baz"></div>',
       viewModel(params) { this.baz = params.baz }
@@ -38,9 +39,6 @@ describe('getComponentParams' , () => {
   })
 
   it('can access/update component params with a class viewModel', () => {
-    if (ko.components.isRegistered('foo'))
-     ko.components.unregister('foo')
-
     ko.components.register('foo', {
       template: '<div data-bind="text: baz"></div>',
       viewModel: class ViewModel { constructor(params) { this.baz = params.baz } }
@@ -70,9 +68,6 @@ describe('getComponentParams' , () => {
   })
 
   it('can access/update component params with a factory viewModel', () => {
-    if (ko.components.isRegistered('foo'))
-     ko.components.unregister('foo')
-
     ko.components.register('foo', {
       template: '<div data-bind="text: baz"></div>',
       viewModel: {
@@ -107,9 +102,6 @@ describe('getComponentParams' , () => {
   })
 
   it('can access/update component params with no viewModel', () => {
-    if (ko.components.isRegistered('foo'))
-     ko.components.unregister('foo')
-
     ko.components.register('foo', {
       template: '<div data-bind="text: baz"></div>'
     })
@@ -138,9 +130,6 @@ describe('getComponentParams' , () => {
   })
 
   it('can\'t access/update component params with a shared instance', () => {
-    if (ko.components.isRegistered('foo'))
-     ko.components.unregister('foo')
-
     ko.components.register('foo', {
       template: '<div></div>',
       viewModel: { instance: {} }
@@ -160,7 +149,5 @@ describe('getComponentParams' , () => {
 
     expect($el.find('foo')).to.exist
     expect($el.find('foo').getComponentParams()).to.be.undefined
-
-    ko.components.unregister('foo')
   })
 })
