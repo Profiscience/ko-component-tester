@@ -36,8 +36,8 @@ describe('waitForBinding' , () => {
 
   it('should throw error if binding is not defined', (done) => {
     const $el = renderComponent({
-      template: `<span class="test-me" data-bind="notdefined: ''"></span>`,
-      viewModel: function() { }
+      template: '<span class="test-me" data-bind="notdefined: \'\'"></span>',
+      viewModel() { }
     })
 
     const $$el = $el.find('.test-me')
@@ -56,7 +56,7 @@ describe('waitForBinding' , () => {
         <span class="ignore-me" data-bind="asyncText: greeting"></span>
         <span class="test-me" data-bind="asyncText: greeting"></span>
       `,
-      viewModel: function() { this.greeting = 'Hello Component' }
+      viewModel() { this.greeting = 'Hello Component' }
     })
 
     const $$el = $el.find('.test-me')
@@ -71,7 +71,7 @@ describe('waitForBinding' , () => {
       template: `
         <span class="test-me" data-bind="asyncVisible: visible"></span>
       `,
-      viewModel: function() { this.visible = false }
+      viewModel() { this.visible = false }
     })
 
     const $$el = $el.find('.test-me')

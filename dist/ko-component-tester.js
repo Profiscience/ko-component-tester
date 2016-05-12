@@ -173,10 +173,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	function renderComponent(component) {
-	  var params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-	  var parentCtx = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+	  var _params = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-	  var $el = $('<div data-bind="_setContext: _parentCtx, component: { name: \'_SUT\', params: _params }"></div>');
+	  var _bindingCtx = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	  var $el = $('<div data-bind="_setContext, component: { name: \'_SUT\', params: _params }"></div>');
 	  component.synchronous = true;
 
 	  if (ko.components.isRegistered('_SUT')) {
@@ -186,12 +187,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ko.components.register('_SUT', component);
 	  ko.bindingHandlers._setContext = {
 	    init: function init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-	      _.merge(bindingContext, parentCtx);
+	      _.merge(bindingContext, _bindingCtx);
 	    }
 	  };
 
 	  $('body').html($el);
-	  ko.applyBindings(_.merge({ _params: params }, parentCtx), $el.get(0));
+	  ko.applyBindings(_.merge({ _params: _params }), $el.get(0));
 	  ko.tasks.runEarly();
 
 	  ko.components.unregister('_SUT');

@@ -6,44 +6,44 @@ const { expect } = require('chai')
 
 describe('$context' , () => {
 
-  it('should be able to access the parent bindingContext', () => {
-    const x = 'x'
+  it('should be able to access the bindingContext', () => {
+    const foo = 'foo'
     ko.bindingHandlers.checkContext = {
       init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-        expect(bindingContext.$parentContext.greeting()).to.equal(x)
+        expect(bindingContext.greeting()).to.equal(foo)
       }
     }
     const $el = renderComponent({
-      template: `<span data-bind="text: $parent.greeting, checkContext"></span>`
+      template: '<span data-bind="text: greeting, checkContext"></span>'
     },
     {},
     {
-      greeting: ko.observable(x)
+      greeting: ko.observable(foo)
     })
 
-    expect($el.html()).contains(x)
-    expect($el.$context().$parent.greeting()).to.equal(x)
+    expect($el.html()).to.contain(foo)
+    expect($el.$context().greeting()).to.equal(foo)
   })
 
-  it('should be able to update the parent bindingContext', () => {
-    const x = 'x', y = 'y'
+  it('should be able to update the bindingContext', () => {
+    let v = 'foo'
     ko.bindingHandlers.checkContext = {
-      init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-        expect(bindingContext.$parentContext.greeting()).to.equal(x)
+      update(el, valueAccessor, allBindings, viewModel, bindingContext) {
+        expect(bindingContext.greeting()).to.equal(v)
       }
     }
     const $el = renderComponent({
-      template: `<span data-bind="text: $parent.greeting, checkContext"></span>`
+      template: '<span data-bind="text: greeting, checkContext"></span>'
     },
     {},
     {
-      greeting: ko.observable(x)
+      greeting: ko.observable(v)
     })
 
-    $el.$context().$parent.greeting(y)
-    expect($el.$context().$parent.greeting()).equals(y)
-    expect($el.html()).contains(y)
+    v = 'bar'
 
+    $el.$context().greeting(v)
+    ko.tasks.runEarly()
+    expect($el.html()).to.contain(v)
   })
-
 })
