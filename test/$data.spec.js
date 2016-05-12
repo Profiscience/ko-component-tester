@@ -5,9 +5,16 @@ const { renderComponent } = require('../src')
 const { expect } = require('chai')
 
 describe('$.fn.$data' , () => {
+  let $el
+
+  afterEach(() => {
+    $el.dispose()
+  })
+
   it('should be able to access viewmodel', () => {
     const x = 'x'
-    const $el = renderComponent({
+
+    $el = renderComponent({
       template: '<span data-bind="text: greeting"></span>',
       viewModel() { this.greeting = ko.observable(x) }
     })
@@ -18,7 +25,8 @@ describe('$.fn.$data' , () => {
 
   it('should be able to update viewmodel', () => {
     const x = 'x'
-    const $el = renderComponent({
+
+    $el = renderComponent({
       template: '<span data-bind="text: greeting"></span>',
       viewModel() { this.greeting = ko.observable() }
     })

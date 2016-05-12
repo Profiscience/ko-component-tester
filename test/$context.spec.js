@@ -5,6 +5,11 @@ const { renderComponent } = require('../src')
 const { expect } = require('chai')
 
 describe('$context' , () => {
+  let $el
+
+  afterEach(() => {
+    $el.dispose()
+  })
 
   it('should be able to access the bindingContext', () => {
     const foo = 'foo'
@@ -13,7 +18,8 @@ describe('$context' , () => {
         expect(bindingContext.greeting()).to.equal(foo)
       }
     }
-    const $el = renderComponent({
+
+    $el = renderComponent({
       template: '<span data-bind="text: greeting, checkContext"></span>'
     },
     {},
@@ -32,7 +38,8 @@ describe('$context' , () => {
         expect(bindingContext.greeting()).to.equal(v)
       }
     }
-    const $el = renderComponent({
+
+    $el = renderComponent({
       template: '<span data-bind="text: greeting, checkContext"></span>'
     },
     {},

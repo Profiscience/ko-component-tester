@@ -28,6 +28,10 @@ describe('sample login component' , () => {
     })
   })
 
+  after(() => {
+    $el.dispose()
+  })
+
   it('renders correctly', () => {
     expect($el).to.exist
     expect($el.find('form'), 'contains a form').to.exist
