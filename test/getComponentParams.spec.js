@@ -11,7 +11,7 @@ describe('getComponentParams' , () => {
 
     ko.components.register('foo', {
       template: '<div data-bind="text: baz"></div>',
-      viewModel: function(params) { this.baz = params.baz }
+      viewModel(params) { this.baz = params.baz }
     })
 
     const $el = renderHtml({

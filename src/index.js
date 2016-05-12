@@ -111,8 +111,8 @@ $.fn.getComponentParams = function() {
   return ko.contextFor(ko.virtualElements.firstChild(this.get(0))).$component._calledWith
 }
 
-function renderComponent(component, params = {}, parentCtx = {}) {
-  const $el = $(`<div data-bind="_setContext: _parentCtx, component: { name: '_SUT', params: _params }"></div>`)
+function renderComponent(component, _params = {}, _bindingCtx = {}) {
+  const $el = $('<div data-bind="_setContext, component: { name: \'_SUT\', params: _params }"></div>')
   component.synchronous = true
 
   if (ko.components.isRegistered('_SUT')) {
@@ -122,12 +122,12 @@ function renderComponent(component, params = {}, parentCtx = {}) {
   ko.components.register('_SUT', component)
   ko.bindingHandlers._setContext = {
     init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-      _.merge(bindingContext, parentCtx)
+      _.merge(bindingContext, _bindingCtx)
     }
   }
 
   $('body').html($el)
-  ko.applyBindings(_.merge({ _params: params }, parentCtx), $el.get(0))
+  ko.applyBindings(_.merge({ _params }), $el.get(0))
   ko.tasks.runEarly()
 
   ko.components.unregister('_SUT')
