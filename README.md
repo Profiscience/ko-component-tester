@@ -3,7 +3,7 @@
 [![NPM](https://img.shields.io/npm/v/ko-component-tester.svg)](https://www.npmjs.com/package/ko-component-tester)
 ![WTFPL](https://img.shields.io/npm/l/ko-component-tester.svg)
 [![Travis](https://img.shields.io/travis/Profiscience/ko-component-tester.svg)](https://travis-ci.org/Profiscience/ko-component-tester)
-[![Coverage Status](https://coveralls.io/repos/github/Profiscience/ko-component-tester/badge.svg?branch=nix-codeclimate)](https://coveralls.io/github/Profiscience/ko-component-tester?branch=nix-codeclimate)
+[![Coverage Status](https://coveralls.io/repos/github/Profiscience/ko-component-tester/badge.svg?branch=nix-codeclimate)](https://coveralls.io/github/Profiscience/ko-component-tester?branch=master)
 [![Dependency Status](https://img.shields.io/david/Profiscience/ko-component-tester.svg)](https://david-dm.org/Profiscience/ko-component-tester)
 [![Peer Dependency Status](https://img.shields.io/david/peer/Profiscience/ko-component-tester.svg?maxAge=2592000)](https://david-dm.org/Profiscience/ko-component-tester#info=peerDependencies&view=table)
 [![NPM Downloads](https://img.shields.io/npm/dt/ko-component-tester.svg?maxAge=2592000)](http://npm-stat.com/charts.html?package=ko-component-tester&author=&from=&to=)
