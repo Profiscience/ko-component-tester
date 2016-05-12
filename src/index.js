@@ -112,7 +112,8 @@ $.fn.getComponentParams = function() {
 }
 
 function renderComponent(component, _params = {}, _bindingCtx = {}) {
-  const $el = $('<div data-bind="_setContext, component: { name: \'_SUT\', params: _params }"></div>')
+  const _component = ko.observable('_SUT')
+  const $el = $('<div data-bind="_setContext, component: { name: _component, params: _params }"></div>')
   component.synchronous = true
 
   if (ko.components.isRegistered('_SUT')) {
@@ -127,11 +128,19 @@ function renderComponent(component, _params = {}, _bindingCtx = {}) {
   }
 
   $('body').html($el)
-  ko.applyBindings(_.merge({ _params }), $el.get(0))
+  ko.applyBindings(_.merge({ _component, _params }), $el.get(0))
   ko.tasks.runEarly()
 
   ko.components.unregister('_SUT')
   ko.bindingHandlers._setContext = (void 0)
+
+  $el.dispose = function() {
+    ko.components.register('_NULL', { template: '<!-- nothing to see here, carry on -->' })
+    _component('_NULL')
+    ko.tasks.runEarly()
+    ko.components.unregister('_NULL')
+    $el.remove()
+  }
 
   return $el
 }

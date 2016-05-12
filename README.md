@@ -51,6 +51,9 @@ describe('Hello World Component' , () => {
       viewModel: function() { this.greeting = 'Hello World' }
     })
   })
+  afterEach(() => {
+    $el.dispose()
+  })
   it('renders', () => {
     expect($el).to.exist
   })
@@ -91,6 +94,10 @@ describe('sample login component' , () => {
           <input type="submit">
         </form>`
     })
+  })
+
+  after(() => {
+    $el.dispose()
   })
 
   it('renders correctly', () => {
@@ -161,13 +168,14 @@ const $el = renderHtml(options)
 [See spec for more examples of renderHtml().](test/renderHtml.spec.js)
 
 
-#### renderComponent(component, params, parentBindingContext)
+#### renderComponent(component, params, bindingContext)
 
 returns a jQuery element containing the rendered html output
 
 - `component.template` - a string of html to be rendered
 - `component.viewModel` - a function, class, or instance
 - `params` - optional params to be passed into the viewModel's constructor
+- `bindingContext` - optional bindingContext to inject (useful for stubbing `$parent` or `$index`)
 
 Example with viewModel function:
 
@@ -177,6 +185,7 @@ const component = {
   viewModel: function() { this.greeting = 'Hello Text Binding' }
 }
 const $el = renderComponent(component)
+// $el.dispose()
 ```
 
 Example with viewModel class:
@@ -194,6 +203,7 @@ const params = {
   greeting: 'Hello Text Binding'
 }
 const $el = renderComponent(component, params)
+// $el.dispose()
 ```
 
 Example with viewModel instance:
@@ -209,6 +219,7 @@ const component = {
   viewModel: { instance: new ViewModel(params) }
 }
 const $el = renderComponent(component)
+// $el.dispose()
 ```
 
 [See spec for more examples of renderComponent().](test/renderComponent.spec.js)

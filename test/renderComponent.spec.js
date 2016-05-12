@@ -2,10 +2,17 @@
 
 const { renderComponent } = require('../src')
 const { expect } = require('chai')
+const sinon = require('sinon')
 
 describe('renderComponent' , () => {
+  let $el
+
+  afterEach(() => {
+    $el.dispose()
+  })
+
   it('works with elements', () => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span data-bind="text: greeting"></span>',
       viewModel() { this.greeting = 'Hello Component' }
     })
@@ -15,7 +22,7 @@ describe('renderComponent' , () => {
   })
 
   it('works with text nodes', () => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: `
         Hello Component
       `
@@ -32,7 +39,7 @@ describe('renderComponent' , () => {
       // do nothing
     }
 
-    const $el = renderComponent({
+    $el = renderComponent({
       template: `
         Hello Component
       `
@@ -40,5 +47,22 @@ describe('renderComponent' , () => {
 
     expect($el).to.exist
     expect($el.html()).contains('Hello Component')
+  })
+})
+
+describe('renderComponent', () => {
+  describe('#dispose', () => {
+    const dispose = sinon.spy()
+
+    it('calls the dispose callback', () => {
+      const $el = renderComponent({
+        template: '<span></span>',
+        viewModel() { this.dispose = dispose }
+      })
+
+      $el.dispose()
+      expect(dispose.called).to.be.true
+    })
+
   })
 })

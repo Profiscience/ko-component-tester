@@ -5,6 +5,8 @@ const { renderComponent } = require('../src')
 const { expect } = require('chai')
 
 describe('waitForBinding' , () => {
+  let $el
+
   before(() => {
     ko.bindingHandlers.asyncText = {
       init(el, valueAccessor) {
@@ -34,8 +36,12 @@ describe('waitForBinding' , () => {
     ko.bindingHandlers.asyncText = (void 0)
   })
 
+  afterEach(() => {
+    $el.dispose()
+  })
+
   it('should throw error if binding is not defined', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span class="test-me" data-bind="notdefined: \'\'"></span>',
       viewModel() { }
     })
@@ -51,7 +57,7 @@ describe('waitForBinding' , () => {
   })
 
   it('works with bindings that have init funcs', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: `
         <span class="ignore-me" data-bind="asyncText: greeting"></span>
         <span class="test-me" data-bind="asyncText: greeting"></span>
@@ -67,7 +73,7 @@ describe('waitForBinding' , () => {
   })
 
   it('works with bindings that DON\'T have init funcs', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: `
         <span class="test-me" data-bind="asyncVisible: visible"></span>
       `,

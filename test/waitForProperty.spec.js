@@ -6,8 +6,14 @@ const { renderComponent } = require('../src')
 const { expect } = require('chai')
 
 describe('waitForProperty' , function() { // eslint-disable-line
+  let $el
+
+  afterEach(() => {
+    $el.dispose()
+  })
+
   it('waits for property to be defined when no value specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable()
@@ -23,7 +29,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('waits for property to be equal value specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable('Hello, World"')
@@ -40,7 +46,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('waits for property to match regex specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable('Hello, World"')
@@ -57,7 +63,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('resolves immediately if not undefined and no value specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable('Hello, World!')
@@ -72,7 +78,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('resolves immediately if already equal to value specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable('Hello, World!')
@@ -87,7 +93,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   })
 
   it('resolves immediately if already matches regex specified', (done) => {
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable('Hello, World!')
@@ -104,7 +110,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   it('times out after 2000ms by default', (done) => {
     const clock = sinon.useFakeTimers()
 
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable()
@@ -123,7 +129,7 @@ describe('waitForProperty' , function() { // eslint-disable-line
   it('can set a custom timeout', (done) => {
     const clock = sinon.useFakeTimers()
 
-    const $el = renderComponent({
+    $el = renderComponent({
       template: '<span></span>',
       viewModel() {
         this.greeting = ko.observable()
