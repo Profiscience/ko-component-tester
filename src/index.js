@@ -38,18 +38,19 @@ $.fn.waitForBinding = function(bindingName) {
   })
 }
 
-$.fn.waitForProperty = function(prop, val, timeout = 2000) {
+$.fn.waitForProperty = function(key, val, timeout = 2000) {
+  const prop = access(key.split('.'), this.$data())
   return new Promise((resolve, reject) => {
-    if (matches(this.$data()[prop]())) {
-      return resolve(this.$data()[prop]())
+    if (matches(prop())) {
+      return resolve(prop())
     }
 
     const timeoutId = setTimeout(() => {
       killMe.dispose()
-      reject(`Timed out waiting for property ${prop}`)
+      reject(`Timed out waiting for property ${key}`)
     }, timeout)
 
-    const killMe = this.$data()[prop].subscribe((v) => {
+    const killMe = prop.subscribe((v) => {
       if (!matches(v)) {
         return
       }
@@ -60,6 +61,13 @@ $.fn.waitForProperty = function(prop, val, timeout = 2000) {
       resolve(v)
     })
   })
+
+  function access([k, ...ks], obj) {
+    const p = obj[k]
+    return ks.length > 0
+      ? access(ks, p)
+      : p
+  }
 
   function matches(v) {
     return typeof v !== 'undefined' && (typeof val === 'undefined' || (val instanceof RegExp

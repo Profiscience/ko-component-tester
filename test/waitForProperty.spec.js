@@ -28,6 +28,24 @@ describe('waitForProperty' , function() { // eslint-disable-line
     })
   })
 
+  it('works with deep properties (ex. `foo.bar.baz` to access { foo: { bar: { baz: null } } })', (done) => {
+    $el = renderComponent({
+      template: '<span></span>',
+      viewModel() {
+        this.foo = {
+          bar: ko.observable()
+        }
+        setTimeout(() => this.foo.bar('bar'), 200)
+      }
+    })
+
+    $el.waitForProperty('foo.bar').then((v) => {
+      expect(v).to.equal('bar')
+      expect($el.$data().foo.bar()).to.equal('bar')
+      done()
+    })
+  })
+
   it('waits for property to be equal value specified', (done) => {
     $el = renderComponent({
       template: '<span></span>',

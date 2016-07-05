@@ -58,6 +58,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	function _toArray(arr) { return Array.isArray(arr) ? arr : Array.from(arr); }
+
 	var ko = __webpack_require__(1);
 	var $ = __webpack_require__(2);
 	var _ = __webpack_require__(3);
@@ -96,22 +98,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	$.fn.waitForProperty = function (prop, val) {
-	  var _this2 = this;
-
+	$.fn.waitForProperty = function (key, val) {
 	  var timeout = arguments.length <= 2 || arguments[2] === undefined ? 2000 : arguments[2];
 
+	  var prop = access(key.split('.'), this.$data());
 	  return new Promise(function (resolve, reject) {
-	    if (matches(_this2.$data()[prop]())) {
-	      return resolve(_this2.$data()[prop]());
+	    if (matches(prop())) {
+	      return resolve(prop());
 	    }
 
 	    var timeoutId = setTimeout(function () {
 	      killMe.dispose();
-	      reject('Timed out waiting for property ' + prop);
+	      reject('Timed out waiting for property ' + key);
 	    }, timeout);
 
-	    var killMe = _this2.$data()[prop].subscribe(function (v) {
+	    var killMe = prop.subscribe(function (v) {
 	      if (!matches(v)) {
 	        return;
 	      }
@@ -122,6 +123,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	      resolve(v);
 	    });
 	  });
+
+	  function access(_ref, obj) {
+	    var _ref2 = _toArray(_ref);
+
+	    var k = _ref2[0];
+
+	    var ks = _ref2.slice(1);
+
+	    var p = obj[k];
+	    return ks.length > 0 ? access(ks, p) : p;
+	  }
 
 	  function matches(v) {
 	    return typeof v !== 'undefined' && (typeof val === 'undefined' || (val instanceof RegExp ? val.test(v) : v === val));
@@ -210,10 +222,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return $el;
 	}
 
-	function renderHtml(_ref) {
-	  var template = _ref.template;
-	  var _ref$viewModel = _ref.viewModel;
-	  var viewModel = _ref$viewModel === undefined ? {} : _ref$viewModel;
+	function renderHtml(_ref3) {
+	  var template = _ref3.template;
+	  var _ref3$viewModel = _ref3.viewModel;
+	  var viewModel = _ref3$viewModel === undefined ? {} : _ref3$viewModel;
 
 	  var $el = void 0;
 	  try {
