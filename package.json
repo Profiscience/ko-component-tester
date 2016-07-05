@@ -53,7 +53,7 @@
     "webpack": "^1.13.0"
   },
   "peerDependencies": {
-    "jquery": "^2.2.2",
+    "jquery": "^3.0",
     "knockout": "^3.4.0"
   }
 }
