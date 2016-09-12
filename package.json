@@ -9,7 +9,7 @@
   "scripts": {
     "build": "webpack && uglifyjs dist/ko-component-tester.js -o dist/ko-component-tester.min.js",
     "watch": "webpack --watch",
-    "prepublish": "npm run build",
+    "prepublish": "npm run build && npm run stage-dist",
     "stage-dist": "git add dist",
     "test": "karma start karma.travis.js",
     "test:watch": "karma start"
