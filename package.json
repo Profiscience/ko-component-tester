@@ -48,6 +48,7 @@
     "mocha": "^3.0.2",
     "mocha-loader": "^0.7.1",
     "pre-commit": "^1.1.2",
+    "simulate-event": "^1.4.0",
     "sinon": "^2.0.0-pre",
     "uglify-js": "^2.4.24",
     "webpack": "^1.13.0"
