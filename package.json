@@ -55,5 +55,8 @@
   "peerDependencies": {
     "jquery": ">= 2.2.0",
     "knockout": "^3.4.0"
+  },
+  "dependencies": {
+    "@types/jquery": "^2.0.40"
   }
 }
