@@ -3,14 +3,16 @@
 const ko = require('knockout')
 const $ = require('jquery')
 const _ = require('lodash')
+const simulateEvent = require('simulate-event')
 
 $.fn.simulate = function(eventName, value) {
   if (value) {
     this.val(value)
   }
-  const event = window.document.createEvent('UIEvents')
-  event.initEvent(eventName, true, true)
-  this.get(0).dispatchEvent(event)
+  if (value) this.val(value)
+
+  var target = this.get(0)
+  simulateEvent.simulate(target, eventName, value)
   ko.tasks.runEarly()
 }
 
