@@ -6,6 +6,7 @@
   "homepage": "https://github.com/Profiscience/ko-component-tester",
   "bugs": "https://github.com/Profiscience/ko-component-tester/issues",
   "main": "dist/ko-component-tester.js",
+  "types": "ko-component-tester.d.ts",
   "scripts": {
     "build": "webpack && uglifyjs dist/ko-component-tester.js -o dist/ko-component-tester.min.js",
     "watch": "webpack --watch",
@@ -55,5 +56,8 @@
   "peerDependencies": {
     "jquery": ">= 2.2.0",
     "knockout": "^3.4.0"
+  },
+  "dependencies": {
+    "@types/jquery": "^2.0.40"
   }
 }
