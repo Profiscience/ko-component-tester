@@ -6,6 +6,7 @@
   "homepage": "https://github.com/Profiscience/ko-component-tester",
   "bugs": "https://github.com/Profiscience/ko-component-tester/issues",
   "main": "dist/ko-component-tester.js",
+  "types": "ko-component-tester.d.ts",
   "scripts": {
     "build": "webpack && uglifyjs dist/ko-component-tester.js -o dist/ko-component-tester.min.js",
     "watch": "webpack --watch",
