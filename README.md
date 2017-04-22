@@ -1,5 +1,7 @@
 # ko-component-tester
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Profiscience/ko-component-tester.svg)](https://greenkeeper.io/)
+
 [![NPM](https://img.shields.io/npm/v/ko-component-tester.svg)](https://www.npmjs.com/package/ko-component-tester)
 ![WTFPL](https://img.shields.io/npm/l/ko-component-tester.svg)
 [![Travis](https://img.shields.io/travis/Profiscience/ko-component-tester.svg)](https://travis-ci.org/Profiscience/ko-component-tester)
