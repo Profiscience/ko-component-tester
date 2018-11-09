@@ -100,8 +100,8 @@ ko.components.loaders.unshift({
   },
   loadViewModel(name, config, done) {
     if (typeof config === 'function') {
-      done((params) => {
-        const viewModel = new config(params)
+      done((params, componentInfo) => {
+        const viewModel = new config(params, componentInfo)
         viewModel._calledWith = params
         return viewModel
       }, done)
