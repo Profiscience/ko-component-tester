@@ -1,6 +1,6 @@
 {
-  "name": "ko-component-tester",
-  "version": "3.2.1",
+  "name": "ko-component-tester-fork",
+  "version": "3.3.0",
   "description": "automated testing for KnockoutJS components",
   "repository": "profiscience/ko-component-tester",
   "homepage": "https://github.com/Profiscience/ko-component-tester",
@@ -56,5 +56,6 @@
   "peerDependencies": {
     "jquery": ">= 2.2.0",
     "knockout": "^3.4.0"
-  }
+  },
+  "typings":"index.d.ts"
 }
