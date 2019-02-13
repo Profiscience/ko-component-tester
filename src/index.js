@@ -2,7 +2,7 @@
 
 const ko = require('knockout')
 const $ = require('jquery')
-const _ = require('lodash.merge')
+const merge = require('lodash.merge')
 const simulateEvent = require('simulate-event')
 
 $.fn.simulate = function(eventName, value) {
@@ -133,12 +133,12 @@ function renderComponent(component, _params = {}, _bindingCtx = {}) {
   ko.components.register('_SUT', component)
   ko.bindingHandlers._setContext = {
     init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-      _.merge(bindingContext, _bindingCtx)
+      merge(bindingContext, _bindingCtx)
     }
   }
 
   $('body').html($el)
-  ko.applyBindings(_.merge({ _component, _params }), $el.get(0))
+  ko.applyBindings(merge({ _component, _params }), $el.get(0))
   ko.tasks.runEarly()
 
   ko.components.unregister('_SUT')

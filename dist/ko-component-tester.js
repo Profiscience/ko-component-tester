@@ -62,7 +62,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ko = __webpack_require__(1);
 	var $ = __webpack_require__(2);
-	var _ = __webpack_require__(3);
+	var merge = __webpack_require__(3);
 	var simulateEvent = __webpack_require__(5);
 
 	$.fn.simulate = function (eventName, value) {
@@ -200,12 +200,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ko.components.register('_SUT', component);
 	  ko.bindingHandlers._setContext = {
 	    init: function init(el, valueAccessor, allBindings, viewModel, bindingContext) {
-	      _.merge(bindingContext, _bindingCtx);
+	      merge(bindingContext, _bindingCtx);
 	    }
 	  };
 
 	  $('body').html($el);
-	  ko.applyBindings(_.merge({ _component: _component, _params: _params }), $el.get(0));
+	  ko.applyBindings(merge({ _component: _component, _params: _params }), $el.get(0));
 	  ko.tasks.runEarly();
 
 	  ko.components.unregister('_SUT');
